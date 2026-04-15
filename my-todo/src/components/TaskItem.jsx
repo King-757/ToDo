@@ -3,6 +3,12 @@ import React, { useState } from 'react';
 import SubtaskItem from './SubtaskItem';
 import AddSubtaskForm from './AddSubtaskForm';
 
+// Вспомогательная функция для обратной совместимости
+const getTaskStatus = (task) => {
+  if (task.status) return task.status;
+  return task.completed ? 'done' : 'pending';
+};
+
 const TaskItem = ({
   task,
   onCycleStatus,
@@ -12,22 +18,21 @@ const TaskItem = ({
   onDeleteSubtask,
 }) => {
   const [showSubtaskForm, setShowSubtaskForm] = useState(false);
+  const status = getTaskStatus(task);
 
-  // Определяем CSS-класс по статусу
-  const getStatusClass = (status) => {
-    if (status === 'done') return 'completed';
-    if (status === 'in-progress') return 'in-progress';
+  const getStatusClass = (s) => {
+    if (s === 'done') return 'completed';
+    if (s === 'in-progress') return 'in-progress';
     return '';
   };
 
   return (
-    <div className={`task ${getStatusClass(task.status)}`}>
+    <div className={`task ${getStatusClass(status)}`}>
       <div className="task-header">
         <label className="task-label">
-          {/* Чекбокс визуально отмечен, если done */}
           <input
             type="checkbox"
-            checked={task.status === 'done'}
+            checked={status === 'done'}
             onChange={() => onCycleStatus(task.id)}
           />
           <span className="task-title">{task.title}</span>
