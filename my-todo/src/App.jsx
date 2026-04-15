@@ -9,10 +9,10 @@ const App = () => {
   const {
     tasks,
     addTask,
-    toggleTask,
+    cycleTaskStatus,
+    cycleSubtaskStatus,
     deleteTask,
     addSubtask,
-    toggleSubtask,
     deleteSubtask,
   } = useTasks();
 
@@ -31,10 +31,10 @@ const App = () => {
             <TaskItem
               key={task.id}
               task={task}
-              onToggle={toggleTask}
+              onCycleStatus={cycleTaskStatus}
               onDelete={deleteTask}
               onAddSubtask={addSubtask}
-              onToggleSubtask={toggleSubtask}
+              onCycleSubtaskStatus={cycleSubtaskStatus}
               onDeleteSubtask={deleteSubtask}
             />
           ))

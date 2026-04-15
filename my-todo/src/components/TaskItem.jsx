@@ -3,17 +3,32 @@ import React, { useState } from 'react';
 import SubtaskItem from './SubtaskItem';
 import AddSubtaskForm from './AddSubtaskForm';
 
-const TaskItem = ({ task, onToggle, onDelete, onAddSubtask, onToggleSubtask, onDeleteSubtask }) => {
+const TaskItem = ({
+  task,
+  onCycleStatus,
+  onDelete,
+  onAddSubtask,
+  onCycleSubtaskStatus,
+  onDeleteSubtask,
+}) => {
   const [showSubtaskForm, setShowSubtaskForm] = useState(false);
 
+  // Определяем CSS-класс по статусу
+  const getStatusClass = (status) => {
+    if (status === 'done') return 'completed';
+    if (status === 'in-progress') return 'in-progress';
+    return '';
+  };
+
   return (
-    <div className={`task ${task.completed ? 'completed' : ''}`}>
+    <div className={`task ${getStatusClass(task.status)}`}>
       <div className="task-header">
         <label className="task-label">
+          {/* Чекбокс визуально отмечен, если done */}
           <input
             type="checkbox"
-            checked={task.completed}
-            onChange={() => onToggle(task.id)}
+            checked={task.status === 'done'}
+            onChange={() => onCycleStatus(task.id)}
           />
           <span className="task-title">{task.title}</span>
         </label>
@@ -27,7 +42,7 @@ const TaskItem = ({ task, onToggle, onDelete, onAddSubtask, onToggleSubtask, onD
           <SubtaskItem
             key={sub.id}
             subtask={sub}
-            onToggle={() => onToggleSubtask(task.id, sub.id)}
+            onCycleStatus={() => onCycleSubtaskStatus(task.id, sub.id)}
             onDelete={() => onDeleteSubtask(task.id, sub.id)}
           />
         ))}
